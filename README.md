@@ -40,7 +40,7 @@
 ## 📁 Project Structure
 
 ```text
-📦 my-website
+📦 MySite
  ┣ 📜 index.html        # 메인 홈 화면
  ┣ 📜 notice.html       # 공지사항 페이지 (목록, 상세, 등록)
  ┣ 📜 dashboard.html    # 대시보드 요약 및 자료실 연동 카드
