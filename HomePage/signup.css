@@ -1,0 +1,161 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f1f5f9;
+  color: #333;
+}
+
+/* Navigation */
+nav {
+  background: #1e3a8a;
+  padding: 18px 40px;
+  display: flex;         
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav h2 {
+  color: white;
+}
+        
+nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+nav a:hover {
+  color: #bfdbfe;
+}
+
+/* Signup Container */
+.signup-container {
+  width: 100%;
+  max-width: 480px;
+  margin: 45px auto;
+  padding: 35px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.signup-container h1 {
+  text-align: center;
+  color: #1e3a8a;
+  margin-bottom: 10px;
+}
+
+.signup-container .subtitle {
+  text-align: center;
+  color: #777;
+  margin-bottom: 30px;
+}
+
+/* Form */
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 5px rgba(37,99,235,0.3);
+}
+
+/* Terms */
+.terms {
+  margin: 20px 0;
+  font-size: 14px;
+}
+
+.terms input {
+  margin-right: 7px;
+}
+
+/* Signup Button */
+.signup-btn {
+  width: 100%;
+  padding: 14px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 17px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.signup-btn:hover {
+  background: #1e3a8a;
+}
+
+/* Login Link */
+.login-link {
+  text-align: center;
+  margin-top: 22px;
+  font-size: 14px;
+}
+
+.login-link a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Back Button */
+.back-button {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.back-button button {
+  padding: 10px 25px;
+  background: #64748b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.back-button button:hover {
+  background: #334155;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #777;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  nav {
+    padding: 15px 20px;
+  }
+
+  .signup-container {
+    margin: 25px 15px;
+    padding: 25px;
+    width: auto;
+  }
+}
