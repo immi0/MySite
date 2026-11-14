@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemini 스타일 사이드바 홈페이지</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 상단 내비게이션 -->
+  <header>
+    <nav class="navbar">
+      <div class="nav-left">
+        <!-- 커스텀 툴팁을 적용할 토글 버튼 -->
+        <button id="sidebar-toggle" class="sidebar-toggle-btn" data-tooltip="사이드바 닫기" aria-label="사이드바 닫기">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <div class="logo"><a href="#home">MySite</a></div>
+      </div>
+      
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <div class="auth-buttons">
+        <button class="btn btn-login" onclick="alert('로그인 창으로 이동합니다.')">Login</button>
+        <button class="btn btn-signup" onclick="alert('회원가입 창으로 이동합니다.')">Signup</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- 메인 컨테이너 (사이드바 + 메인 콘텐츠) -->
+  <div class="container">
+    <!-- 사이드바 -->
+    <aside id="sidebar" class="sidebar">
+      <h3>카테고리 메뉴</h3>
+      <ul class="sidebar-menu">
+        <li><a href="#notice" class="active">공지사항</a></li>
+        <li><a href="#dashboard">대시보드 요약</a></li>
+        <li><a href="#archive">자료실</a></li>
+        <li><a href="#faq">자주 묻는 질문</a></li>
+        <li><a href="#settings">환경 설정</a></li>
+      </ul>
+    </aside>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="main-content">
+      <section class="hero-section">
+        <h1>환영합니다! 홈페이지 레이아웃입니다.</h1>
+        <p>상단 좌측의 <strong>메뉴 아이콘(≡)</strong>에 마우스를 올리면 즉시 <strong>'사이드바 닫기'</strong> 또는 <strong>'사이드바 열기'</strong> 안내가 표시됩니다.</p>
+      </section>
+
+      <h2>주요 서비스 안내</h2>
+      <div class="card-grid">
+        <div class="card">
+          <h4>서비스 1: 웹 개발</h4>
+          <p>반응형 웹 디자인 및 프론트엔드, 백엔드 시스템 구축을 지원합니다.</p>
+        </div>
+        <div class="card">
+          <h4>서비스 2: 데이터 분석</h4>
+          <p>사용자 데이터를 기반으로 체계적인 인사이트와 리포트를 제공합니다.</p>
+        </div>
+        <div class="card">
+          <h4>서비스 3: 기술 지원</h4>
+          <p>안정적인 서버 운영 및 유지보수를 위한 맞춤형 가이드를 제공합니다.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 하단 푸터 -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="#terms">이용약관</a> |
+        <a href="#privacy">개인정보처리방침</a> |
+        <a href="#support">고객센터</a>
+      </div>
+      <p>&copy; 2026 MySite. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
