@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MySite - 공지사항</title>
+  <!-- Tailwind CSS CDN 연결 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { dark: '#2c3e50', primary: '#3498db', hover: '#2980b9' }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans flex flex-col min-h-screen">
+
+  <!-- 상단 내비게이션 -->
+  <header class="bg-brand-dark text-white shadow-md sticky top-0 z-50">
+    <nav class="max-w-7xl mx-auto px-5 h-16 flex justify-between items-center">
+      <div class="flex items-center gap-4">
+        <!-- 사이드바 토글 버튼 -->
+        <button id="sidebar-toggle" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors relative group cursor-pointer" data-tooltip="사이드바 닫기" aria-label="사이드바 닫기">
+          <svg class="w-5 h-5 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+          <span class="absolute top-full left-1/2 -translate-x-1/2 mt-1 px-2 py-1 bg-gray-900 text-white text-xs rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-20"></span>
+        </button>
+        <div class="text-2xl font-bold tracking-wide"><a href="index.html">MySite</a></div>
+      </div>
+      
+      <ul class="hidden md:flex gap-6 font-medium">
+        <li><a href="./HomePage/index.html" class="hover:text-brand-primary transition-colors">Home</a></li>
+        <li><a href="#services" class="hover:text-brand-primary transition-colors">Services</a></li>
+        <li><a href="./HomePage/contact.html" class="hover:text-brand-primary transition-colors">Contact</a></li>
+        <li><a href="#about" class="hover:text-brand-primary transition-colors">About</a></li>
+      </ul>
+
+      <div class="flex gap-2.5">
+        <button class="px-4 py-2 rounded text-sm font-bold border border-white text-white hover:bg-white hover:text-brand-dark transition-all cursor-pointer" onclick="alert('로그인 창으로 이동합니다.')">Login</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- 메인 컨테이너 -->
+  <div class="max-w-7xl w-full mx-auto px-5 my-6 flex flex-col md:flex-row gap-6 flex-1 overflow-x-hidden">
+    
+    <!-- 모바일 반응형 사이드바 배경 오버레이 -->
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden transition-opacity duration-300 opacity-0"></div>
+
+    <!-- 사이드바 -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-48 bg-white p-5 shadow-xl transform -translate-x-full transition-transform duration-300 ease-in-out md:static md:translate-x-0 md:shadow-sm md:rounded-lg md:h-fit shrink-0 overflow-hidden whitespace-nowrap">
+      <h3 class="text-lg font-bold text-center text-brand-dark mb-4 pb-2.5 border-b-2 border-gray-300">카테고리 메뉴</h3>
+      <ul id="sidebar-menu" class="space-y-2.5">
+        <li><a href="notice.html" class="block px-6 py-2 rounded text-gray-950 hover:bg-blue-50 hover:text-brand-primary font-medium transition-colors">공지사항</a></li>
+        <li><a href="memo.html" class="block px-6 py-2 rounded text-gray-950 hover:bg-blue-50 hover:text-brand-primary font-medium transition-colors">메모장</a></li>
+        <li><a href="archive.html" class="block px-6 py-2 rounded text-gray-950 hover:bg-blue-50 hover:text-brand-primary font-medium transition-colors">자료실</a></li>
+        <li><a href="dashboard.html" class="block px-6 py-2 rounded text-gray-950 hover:bg-blue-50 hover:text-brand-primary font-medium transition-colors">대시보드 요약</a></li>
+        <li><a href="settings.html" class="block px-6 py-2 rounded text-gray-950 hover:bg-blue-50 hover:text-brand-primary font-medium transition-colors">환경 설정</a></li>
+      </ul>
+    </aside>
+
+    <!-- 공지사항 메인 콘텐츠 -->
+    <main class="flex-1 min-w-0 space-y-6">
+      
+      <!-- 상단 타이틀 및 글쓰기 버튼 -->
+      <div class="bg-white p-6 rounded-lg shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 class="text-2xl font-bold text-brand-dark">공지사항</h1>
+          <p class="text-sm text-gray-500 mt-1">시스템 업데이트 및 주요 소식을 확인하세요.</p>
+        </div>
+        <button onclick="openNoticeModal()" class="px-4 py-2 bg-brand-primary hover:bg-brand-hover text-white text-sm font-semibold rounded-md shadow-sm transition-colors flex items-center gap-2 cursor-pointer w-fit">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+          공지 등록
+        </button>
+      </div>
+
+      <!-- 검색 및 카테고리 필터 -->
+      <div class="bg-white p-6 rounded-lg shadow-sm space-y-4">
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-gray-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </span>
+          <input type="text" id="noticeSearch" placeholder="공지사항 제목이나 내용 검색..." class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-brand-primary bg-gray-50">
+        </div>
+
+        <div class="flex flex-wrap gap-2 pt-2 border-t border-gray-100">
+          <button class="px-3.5 py-1.5 text-sm font-medium rounded-md bg-brand-primary text-white transition-colors notice-filter cursor-pointer" data-category="all">전체</button>
+          <button class="px-3.5 py-1.5 text-sm font-medium rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors notice-filter cursor-pointer" data-category="notice">공지</button>
+          <button class="px-3.5 py-1.5 text-sm font-medium rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors notice-filter cursor-pointer" data-category="update">업데이트</button>
+          <button class="px-3.5 py-1.5 text-sm font-medium rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors notice-filter cursor-pointer" data-category="event">이벤트</button>
+        </div>
+      </div>
+
+      <!-- 공지사항 리스트 테이블 -->
+      <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase bg-gray-50">
+                <th class="py-3 px-4 w-20 text-center">번호</th>
+                <th class="py-3 px-4 w-28 text-center">구분</th>
+                <th class="py-3 px-4">제목</th>
+                <th class="py-3 px-4 w-32 text-center">작성일</th>
+                <th class="py-3 px-4 w-20 text-center">관리</th>
+              </tr>
+            </thead>
+            <tbody id="noticeTableBody" class="divide-y divide-gray-100 text-sm"></tbody>
+          </table>
+        </div>
+        <div id="noNotice" class="hidden p-12 text-center text-gray-400">
+          등록된 공지사항이 없거나 검색 결과가 없습니다.
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- 공지 등록 모달 -->
+  <div id="noticeModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
+    <div class="bg-white w-full max-w-lg p-6 rounded-lg shadow-xl mx-4">
+      <div class="flex items-center justify-between mb-4 pb-2 border-b border-gray-100">
+        <h3 class="text-lg font-bold text-brand-dark">새 공지사항 등록</h3>
+        <button onclick="closeNoticeModal()" class="text-gray-400 hover:text-gray-600 text-xl font-bold cursor-pointer">&times;</button>
+      </div>
+      <form onsubmit="handleNoticeSubmit(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1">구분</label>
+          <select id="noticeCategoryInput" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-white focus:outline-none focus:border-brand-primary">
+            <option value="notice">공지</option>
+            <option value="update">업데이트</option>
+            <option value="event">이벤트</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1">제목</label>
+          <input type="text" id="noticeTitleInput" required placeholder="공지 제목을 입력하세요" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-brand-primary">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1">내용</label>
+          <textarea id="noticeContentInput" rows="5" required placeholder="공지 내용을 입력하세요..." class="w-full p-3 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-brand-primary resize-none"></textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-3">
+          <button type="button" onclick="closeNoticeModal()" class="px-4 py-2 bg-gray-100 text-gray-600 text-sm font-semibold rounded-md hover:bg-gray-200 transition-colors cursor-pointer">취소</button>
+          <button type="submit" class="px-4 py-2 bg-brand-primary text-white text-sm font-semibold rounded-md hover:bg-brand-hover transition-colors cursor-pointer">등록하기</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 공지 상세 보기 모달 -->
+  <div id="noticeDetailModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
+    <div class="bg-white w-full max-w-lg p-6 rounded-lg shadow-xl mx-4 space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-gray-100">
+        <div class="flex items-center gap-2">
+          <span id="detailBadge" class="px-2.5 py-0.5 text-xs font-semibold rounded-full"></span>
+          <h3 id="detailTitle" class="text-lg font-bold text-brand-dark"></h3>
+        </div>
+        <button onclick="closeNoticeDetailModal()" class="text-gray-400 hover:text-gray-600 text-xl font-bold cursor-pointer">&times;</button>
+      </div>
+      <p id="detailDate" class="text-xs text-gray-400"></p>
+      <div class="bg-gray-50 p-4 rounded-lg border border-gray-100 max-h-60 overflow-y-auto">
+        <p id="detailContent" class="text-sm text-gray-700 whitespace-pre-line leading-relaxed"></p>
+      </div>
+      <div class="flex justify-end pt-2">
+        <button type="button" onclick="closeNoticeDetailModal()" class="px-4 py-2 bg-brand-primary text-white text-sm font-semibold rounded-md hover:bg-brand-hover transition-colors cursor-pointer">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 푸터 -->
+  <footer class="bg-brand-dark text-gray-300 text-center py-6 mt-auto">
+    <div class="max-w-7xl mx-auto px-5 text-sm">
+      <p>&copy; 2026 MySite. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- 공통 스크립트 및 공지사항 로직 -->
+  <script src="script.js"></script>
+  <script>
+    const defaultNotices = [
+      { id: 1, category: 'notice', title: 'MySite 정식 오픈 및 이용 안내', content: 'Tailwind CSS 기반의 다중 페이지 홈페이지가 정식 오픈되었습니다. 자료실, 대시보드, 메모장 등 다양한 기능을 활용해 보세요.', date: '2026-11-14' },
+      { id: 2, category: 'update', title: '대용량 파일 메타데이터 업로드 기능 적용', content: '브라우저 로컬 스토리지의 5MB 용량 한계를 극복하기 위해 메타데이터 중심 관리 방식으로 전면 개편되었습니다.', date: '2026-11-13' }
+    ];
+
+    function getNotices() {
+      const stored = localStorage.getItem('site_notices');
+      if (!stored) {
+        localStorage.setItem('site_notices', JSON.stringify(defaultNotices));
+        return defaultNotices;
+      }
+      return JSON.parse(stored);
+    }
+
+    function renderNotices(filterCat = 'all', searchQuery = '') {
+      const tbody = document.getElementById('noticeTableBody');
+      const noNotice = document.getElementById('noNotice');
+      const notices = getNotices();
+
+      tbody.innerHTML = '';
+
+      const filtered = notices.filter(n => {
+        const matchesCategory = (filterCat === 'all' || n.category === filterCat);
+        const matchesSearch = n.title.toLowerCase().includes(searchQuery.toLowerCase()) || n.content.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesCategory && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        noNotice.classList.remove('hidden');
+        return;
+      } else {
+        noNotice.classList.add('hidden');
+      }
+
+      filtered.forEach((notice, index) => {
+        let badgeHtml = '<span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-700">공지</span>';
+        if (notice.category === 'update') badgeHtml = '<span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700">업데이트</span>';
+        if (notice.category === 'event') badgeHtml = '<span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-700">이벤트</span>';
+
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-gray-50 transition-colors cursor-pointer';
+        tr.innerHTML = `
+          <td class="py-3.5 px-4 text-center text-gray-500 font-medium">${filtered.length - index}</td>
+          <td class="py-3.5 px-4 text-center">${badgeHtml}</td>
+          <td class="py-3.5 px-4 font-medium text-gray-800 hover:text-brand-primary" onclick="openNoticeDetail(${notice.id})">${notice.title}</td>
+          <td class="py-3.5 px-4 text-center text-gray-500 text-xs">${notice.date}</td>
+          <td class="py-3.5 px-4 text-center">
+            <button onclick="event.stopPropagation(); deleteNotice(${notice.id})" class="px-2 py-1 bg-red-50 hover:bg-red-500 hover:text-white text-red-600 text-xs font-semibold rounded transition-colors cursor-pointer">삭제</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openNoticeModal() {
+      document.getElementById('noticeModal').classList.remove('hidden');
+    }
+    function closeNoticeModal() {
+      document.getElementById('noticeModal').classList.add('hidden');
+    }
+
+    function handleNoticeSubmit(event) {
+      event.preventDefault();
+      const category = document.getElementById('noticeCategoryInput').value;
+      const title = document.getElementById('noticeTitleInput').value.trim();
+      const content = document.getElementById('noticeContentInput').value.trim();
+      const today = new Date().toISOString().split('T')[0];
+
+      const newNotice = {
+        id: Date.now(),
+        category,
+        title,
+        content,
+        date: today
+      };
+
+      const notices = getNotices();
+      notices.unshift(newNotice);
+      localStorage.setItem('site_notices', JSON.stringify(notices));
+
+      alert('새 공지사항이 성공적으로 등록되었습니다.');
+      closeNoticeModal();
+      event.target.reset();
+      renderNotices('all', document.getElementById('noticeSearch').value);
+    }
+
+    function openNoticeDetail(id) {
+      const notices = getNotices();
+      const notice = notices.find(n => n.id === id);
+      if (!notice) return;
+
+      const badgeEl = document.getElementById('detailBadge');
+      if (notice.category === 'notice') {
+        badgeEl.className = 'px-2.5 py-0.5 text-xs font-semibold rounded-full bg-blue-100 text-blue-700';
+        badgeEl.textContent = '공지';
+      } else if (notice.category === 'update') {
+        badgeEl.className = 'px-2.5 py-0.5 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700';
+        badgeEl.textContent = '업데이트';
+      } else {
+        badgeEl.className = 'px-2.5 py-0.5 text-xs font-semibold rounded-full bg-purple-100 text-purple-700';
+        badgeEl.textContent = '이벤트';
+      }
+
+      document.getElementById('detailTitle').textContent = notice.title;
+      document.getElementById('detailDate').textContent = `작성일: ${notice.date}`;
+      document.getElementById('detailContent').textContent = notice.content;
+      document.getElementById('noticeDetailModal').classList.remove('hidden');
+    }
+
+    function closeNoticeDetailModal() {
+      document.getElementById('noticeDetailModal').classList.add('hidden');
+    }
+
+    function deleteNotice(id) {
+      if (confirm('이 공지사항을 삭제하시겠습니까?')) {
+        let notices = getNotices();
+        notices = notices.filter(n => n.id !== id);
+        localStorage.setItem('site_notices', JSON.stringify(notices));
+
+        const activeBtn = document.querySelector('.notice-filter.bg-brand-primary');
+        const currentCat = activeBtn ? activeBtn.getAttribute('data-category') : 'all';
+        renderNotices(currentCat, document.getElementById('noticeSearch').value);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderNotices();
+
+      const searchInput = document.getElementById('noticeSearch');
+      const filterBtns = document.querySelectorAll('.notice-filter');
+      let currentCategory = 'all';
+
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          renderNotices(currentCategory, e.target.value);
+        });
+      }
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => {
+            b.classList.remove('bg-brand-primary', 'text-white');
+            b.classList.add('bg-gray-100', 'text-gray-600');
+          });
+          btn.classList.remove('bg-gray-100', 'text-gray-600');
+          btn.classList.add('bg-brand-primary', 'text-white');
+
+          currentCategory = btn.getAttribute('data-category');
+          renderNotices(currentCategory, searchInput ? searchInput.value : '');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
