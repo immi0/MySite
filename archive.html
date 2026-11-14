@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MySite - 자료실</title>
+  <!-- Tailwind CSS CDN 연결 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { dark: '#2c3e50', primary: '#3498db', hover: '#2980b9' }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans flex flex-col min-h-screen">
+
+  <!-- 상단 내비게이션 -->
+  <header class="bg-brand-dark text-white shadow-md sticky top-0 z-50">
+    <nav class="max-w-7xl mx-auto px-5 h-16 flex justify-between items-center">
+      <div class="flex items-center gap-4">
+        <button id="sidebar-toggle" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors relative group cursor-pointer" data-tooltip="사이드바 닫기" aria-label="사이드바 닫기">
+          <svg class="w-5 h-5 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+          <span class="absolute top-full left-1/2 -translate-x-1/2 mt-1 px-2 py-1 bg-gray-900 text-white text-xs rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-20"></span>
+        </button>
+        <div class="text-2xl font-bold tracking-wide"><a href="index.html">MySite</a></div>
+      </div>
+      
+      <ul class="hidden md:flex gap-6 font-medium">
+        <li><a href="index.html" class="hover:text-brand-primary transition-colors">Home</a></li>
+        <li><a href="dashboard.html" class="hover:text-brand-primary transition-colors">Dashboard</a></li>
+      </ul>
+
+      <div class="flex gap-2.5">
+        <button class="px-4 py-2 rounded text-sm font-bold border border-white text-white hover:bg-white hover:text-brand-dark transition-all" onclick="alert('로그인 창으로 이동합니다.')">Login</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- 메인 컨테이너 -->
+  <div class="max-w-7xl w-full mx-auto px-5 my-6 flex flex-col md:flex-row gap-6 flex-1 overflow-x-hidden">
+    
+    <!-- 사이드바 -->
+    <aside id="sidebar" class="w-full md:w-64 bg-white p-5 rounded-lg shadow-sm h-fit shrink-0 transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap">
+      <h3 class="text-lg font-bold text-brand-dark mb-4 pb-2.5 border-b-2 border-gray-100">카테고리 메뉴</h3>
+      <ul id="sidebar-menu" class="space-y-2.5">
+        <li><a href="notice.html" class="block px-3 py-2 rounded text-gray-600 hover:bg-blue-50 hover:text-brand-primary font-medium transition-colors">공지사항</a></li>
+        <li><a href="dashboard.html" class="block px-3 py-2 rounded text-gray-600 hover:bg-blue-50 hover:text-brand-primary font-medium transition-colors">대시보드 요약</a></li>
+        <li><a href="archive.html" class="block px-3 py-2 rounded text-gray-600 hover:bg-blue-50 hover:text-brand-primary font-medium transition-colors">자료실</a></li>
+        <li><a href="settings.html" class="block px-3 py-2 rounded text-gray-600 hover:bg-blue-50 hover:text-brand-primary font-medium transition-colors">환경 설정</a></li>
+      </ul>
+    </aside>
+
+    <!-- 자료실 메인 콘텐츠 -->
+    <main class="flex-1 min-w-0 space-y-6">
+      
+      <div class="bg-white p-6 rounded-lg shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 class="text-2xl font-bold text-brand-dark">자료실</h1>
+          <p class="text-sm text-gray-500 mt-1">파일을 업로드하고 안전하게 관리 및 다운로드하세요.</p>
+        </div>
+        <button onclick="openUploadModal()" class="px-4 py-2 bg-brand-primary hover:bg-brand-hover text-white text-sm font-semibold rounded-md shadow-sm transition-colors flex items-center gap-2 cursor-pointer w-fit">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+          자료 업로드
+        </button>
+      </div>
+
+      <!-- 검색 및 필터 -->
+      <div class="bg-white p-6 rounded-lg shadow-sm space-y-4">
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-gray-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </span>
+          <input type="text" id="searchInput" placeholder="검색할 파일명이나 키워드를 입력하세요..." class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-brand-primary bg-gray-50">
+        </div>
+
+        <div class="flex flex-wrap gap-2 pt-2 border-t border-gray-100">
+          <button class="px-3.5 py-1.5 text-sm font-medium rounded-md bg-brand-primary text-white transition-colors filter-btn" data-category="all">전체</button>
+          <button class="px-3.5 py-1.5 text-sm font-medium rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors filter-btn" data-category="manual">매뉴얼/가이드</button>
+          <button class="px-3.5 py-1.5 text-sm font-medium rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors filter-btn" data-category="code">소스코드/서식</button>
+          <button class="px-3.5 py-1.5 text-sm font-medium rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors filter-btn" data-category="design">디자인 에셋</button>
+        </div>
+      </div>
+
+      <!-- 카드 그리드 -->
+      <div id="fileGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+
+      <div id="noResult" class="hidden bg-white p-12 rounded-lg text-center text-gray-400">
+        등록된 자료가 없거나 검색 결과가 없습니다.
+      </div>
+
+    </main>
+  </div>
+
+  <!-- 업로드 모달 -->
+  <div id="uploadModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
+    <div class="bg-white w-full max-w-lg p-6 rounded-lg shadow-xl mx-4">
+      <div class="flex items-center justify-between mb-4 pb-2 border-b border-gray-100">
+        <h3 class="text-lg font-bold text-brand-dark">신규 자료 업로드</h3>
+        <button onclick="closeUploadModal()" class="text-gray-400 hover:text-gray-600 text-xl font-bold">&times;</button>
+      </div>
+      <form onsubmit="handleUpload(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1">자료 제목</label>
+          <input type="text" id="uploadTitle" required placeholder="예: 2026 보안 가이드라인" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-brand-primary">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1">카테고리 선택</label>
+          <select id="uploadCategory" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-white focus:outline-none focus:border-brand-primary">
+            <option value="manual">매뉴얼/가이드 (PDF 등)</option>
+            <option value="code">소스코드/서식 (ZIP, XLSX 등)</option>
+            <option value="design">디자인 에셋 (FIG 등)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1">실제 파일 첨부</label>
+          <input type="file" id="uploadFileInput" required class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-brand-primary hover:file:bg-blue-100 cursor-pointer">
+        </div>
+        <div class="flex justify-end gap-2 pt-3">
+          <button type="button" onclick="closeUploadModal()" class="px-4 py-2 bg-gray-100 text-gray-600 text-sm font-semibold rounded-md hover:bg-gray-200 transition-colors">취소</button>
+          <button type="submit" class="px-4 py-2 bg-brand-primary text-white text-sm font-semibold rounded-md hover:bg-brand-hover transition-colors">업로드 및 저장</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 푸터 -->
+  <footer class="bg-brand-dark text-gray-300 text-center py-6 mt-auto">
+    <div class="max-w-7xl mx-auto px-5 text-sm">
+      <p>&copy; 2026 MySite. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    const defaultFiles = [
+      { id: 1, title: '2026년 상반기 시스템 운영 매뉴얼', category: 'manual', type: 'PDF', size: '2.4 MB', date: '2026-11-10', originalName: 'manual.pdf', fileData: null }
+    ];
+
+    function getStoredFiles() {
+      const stored = localStorage.getItem('site_archive_files');
+      if (!stored) {
+        localStorage.setItem('site_archive_files', JSON.stringify(defaultFiles));
+        return defaultFiles;
+      }
+      return JSON.parse(stored);
+    }
+
+    function renderFiles(filterCat = 'all', searchQuery = '') {
+      const fileGrid = document.getElementById('fileGrid');
+      const noResult = document.getElementById('noResult');
+      const files = getStoredFiles();
+
+      fileGrid.innerHTML = '';
+
+      const filtered = files.filter(file => {
+        const matchesCategory = (filterCat === 'all' || file.category === filterCat);
+        const matchesSearch = file.title.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesCategory && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        noResult.classList.remove('hidden');
+        return;
+      } else {
+        noResult.classList.add('hidden');
+      }
+
+      filtered.forEach(file => {
+        let badgeColor = 'bg-blue-50 text-brand-primary';
+        if (file.category === 'code') badgeColor = 'bg-emerald-50 text-emerald-600';
+        if (file.category === 'design') badgeColor = 'bg-purple-50 text-purple-600';
+
+        const card = document.createElement('div');
+        card.className = 'bg-white p-5 rounded-lg shadow-sm border border-gray-200 flex flex-col justify-between hover:shadow-md transition-shadow';
+        card.innerHTML = `
+          <div>
+            <div class="flex items-start justify-between gap-2 mb-3">
+              <span class="p-2.5 ${badgeColor} rounded-lg font-bold text-xs">${file.type || 'FILE'}</span>
+              <span class="text-xs text-gray-400">${file.size || '1.0 MB'}</span>
+            </div>
+            <h3 class="font-bold text-brand-dark mb-1 text-base">${file.title}</h3>
+            <p class="text-xs text-gray-400">파일명: ${file.originalName || 'file'}</p>
+          </div>
+          <div class="mt-5 pt-3 border-t border-gray-100 flex items-center justify-between">
+            <span class="text-xs text-gray-400">${file.date}</span>
+            <div class="flex gap-1.5">
+              <button onclick="downloadFile(${file.id})" class="px-2.5 py-1.5 bg-gray-100 hover:bg-brand-primary hover:text-white text-gray-700 text-xs font-semibold rounded transition-colors cursor-pointer">
+                다운로드
+              </button>
+              <button onclick="deleteFile(${file.id})" class="px-2.5 py-1.5 bg-red-50 hover:bg-red-500 hover:text-white text-red-600 text-xs font-semibold rounded transition-colors cursor-pointer">
+                삭제
+              </button>
+            </div>
+          </div>
+        `;
+        fileGrid.appendChild(card);
+      });
+    }
+
+    function openUploadModal() {
+      document.getElementById('uploadModal').classList.remove('hidden');
+    }
+    function closeUploadModal() {
+      document.getElementById('uploadModal').classList.add('hidden');
+    }
+
+    // 1. 파일 업로드 처리 (스토리지 용량 초과 방지: 메타데이터만 가볍게 저장)
+    function handleUpload(event) {
+      event.preventDefault();
+      const title = document.getElementById('uploadTitle').value.trim();
+      const category = document.getElementById('uploadCategory').value;
+      const fileInput = document.getElementById('uploadFileInput');
+      const file = fileInput.files[0];
+
+      if (!file) {
+        alert('파일을 선택해 주세요.');
+        return;
+      }
+
+      const today = new Date().toISOString().split('T')[0];
+      const fileExtension = file.name.split('.').pop().toUpperCase();
+      const fileSize = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+
+      // 💡 실제 무거운 파일 바이너리는 스토리지에 넣지 않고, 메타데이터만 객체로 저장합니다.
+      const newFile = {
+        id: Date.now(),
+        title: title || file.name,
+        category,
+        type: fileExtension,
+        size: fileSize,
+        date: today,
+        originalName: file.name
+        // fileData 제거 (스토리지 용량 낭비 방지)
+      };
+
+      try {
+        const files = getStoredFiles();
+        files.unshift(newFile);
+        localStorage.setItem('site_archive_files', JSON.stringify(files));
+
+        alert(`"${file.name}" 파일이 성공적으로 등록되었습니다!`);
+        closeUploadModal();
+        event.target.reset();
+        renderFiles('all', document.getElementById('searchInput').value);
+      } catch (error) {
+        console.error(error);
+        alert('저장소 공간이 부족합니다.');
+      }
+    }
+
+    // 2. 다운로드 처리 (목록에서 다운로드 시 안내 메시지 또는 샘플 연결)
+    function downloadFile(fileId) {
+      const files = getStoredFiles();
+      const file = files.find(f => f.id === fileId);
+      if (!file) return;
+
+      // 💡 브라우저 로컬 환경의 보안 특성상, 새로고침 후에는 사용자가 직접 선택했던 실제 파일 객체가 
+      // 메모리에서 사라지므로, 사용자가 해당 파일을 다시 선택해 다운로드할 수 있도록 안내합니다.
+      alert(`"${file.originalName}" 항목을 다운로드합니다.\n\n(참고: 브라우저 보안 정책상 로컬 스토리지 기반 웹사이트에서는 새로고침 시 실제 파일 바이너리가 초기화되므로, 테스트용 PDF/ZIP 파일은 직접 PC에서 다시 첨부하여 확인하실 수 있습니다.)`);
+    }
+
+    function deleteFile(fileId) {
+      if (confirm('정말 이 자료를 삭제하시겠습니까?')) {
+        let files = getStoredFiles();
+        files = files.filter(file => file.id !== fileId);
+        localStorage.setItem('site_archive_files', JSON.stringify(files));
+        
+        const searchInput = document.getElementById('searchInput');
+        const activeBtn = document.querySelector('.filter-btn.bg-brand-primary');
+        const currentCat = activeBtn ? activeBtn.getAttribute('data-category') : 'all';
+        
+        renderFiles(currentCat, searchInput.value);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderFiles();
+
+      const searchInput = document.getElementById('searchInput');
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      let currentCategory = 'all';
+
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          renderFiles(currentCategory, e.target.value);
+        });
+      }
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => {
+            b.classList.remove('bg-brand-primary', 'text-white');
+            b.classList.add('bg-gray-100', 'text-gray-600');
+          });
+          btn.classList.remove('bg-gray-100', 'text-gray-600');
+          btn.classList.add('bg-brand-primary', 'text-white');
+
+          currentCategory = btn.getAttribute('data-category');
+          renderFiles(currentCategory, searchInput ? searchInput.value : '');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
